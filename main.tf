@@ -29,3 +29,11 @@ resource "aws_security_group" "nginx_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+module "ec2" {
+  source                 = "./modules/ec2"
+  ami_id                 = var.ami_id
+  instance_type          = var.instance_type
+  subnet_id              = module.vpc.public_subnet_ids[0]
+  security_group_ids     = [aws_security_group.nginx_sg.id]
+}
